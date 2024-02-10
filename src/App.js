@@ -1,8 +1,44 @@
+import "leaflet/dist/leaflet.css";
+import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
+import { useEffect, useState } from "react";
+
 function App() {
+  const [access, setAccess] = useState(false);
+  const [coords, setCoords] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(function () {
+    setIsLoading(true);
+    navigator.geolocation.getCurrentPosition(
+      (pos) => {
+        setAccess(true);
+        setCoords([pos.coords.latitude, pos.coords.longitude]);
+        setIsLoading(false);
+      },
+      () => {
+        setIsLoading(false);
+        console.error("Loacation not found");
+      }
+    );
+  }, []);
+
   return (
     <div className="wrapper">
       <Header />
-      <main id="map"></main>
+      {isLoading && <p className="loader">Map Is Loading ...</p>}
+      {access && (
+        <MapContainer id="map" center={coords} zoom={17} scrollWheelZoom={true}>
+          <TileLayer
+            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+          />
+          <Marker position={coords}>
+            <Popup>
+              A pretty CSS3 popup. <br /> Easily customizable.
+            </Popup>
+          </Marker>
+        </MapContainer>
+      )}
     </div>
   );
 }

@@ -96,6 +96,7 @@ button {
   padding: 2rem;
   border-radius: 0.8rem;
   box-shadow: 0.5rem 0.5rem 4rem 0 rgba(0, 0, 0, 0.25);
+  z-index: 1000;
 }
 
 .result__data {
@@ -119,6 +120,25 @@ button {
 }
 
 #map {
-  height: 100dvh;
-  background-color: aqua;
+  min-height: 100dvh;
+  /* background-color: aqua; */
+}
+
+@keyframes waviy {
+  0%,
+  40%,
+  100% {
+    transform: translateY(0);
+  }
+  20% {
+    transform: translateY(-10px);
+  }
+}
+
+.loader {
+  text-align: center;
+  font-size: 3.5rem;
+  color: var(--color-veryDarkGray);
+  margin-top: 15rem;
+  animation: waviy 1s infinite;
 }
