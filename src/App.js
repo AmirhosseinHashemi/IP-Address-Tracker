@@ -27,7 +27,7 @@ function App() {
       <Header />
       {isLoading && <p className="loader">Map Is Loading ...</p>}
       {access && (
-        <MapContainer id="map" center={coords} zoom={17} scrollWheelZoom={true}>
+        <MapContainer id="map" center={coords} zoom={12} scrollWheelZoom={true}>
           <TileLayer
             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
