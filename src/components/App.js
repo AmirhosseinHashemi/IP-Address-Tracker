@@ -17,38 +17,62 @@ function App() {
   const [ipInfo, setIpInfo] = useState({});
   const [isLoading, setIsLoading] = useState(false);
   const [inputValue, setInputValue] = useState("");
+  const [request, setRequest] = useState("");
 
   function handleInputValue(value) {
     setInputValue(value);
   }
 
-  useEffect(function () {
-    async function fetchData() {
-      try {
-        setIsLoading(true);
+  function handleFetchingData(ev) {
+    ev.preventDefault();
 
-        // get IP
-        const res = await fetch(
-          "https://geo.ipify.org/api/v2/country,city?apiKey=at_mrjYHwA8uXINz861UQyU6ym74Xh0X&"
-        );
-        if (!res.ok) throw new Error("Something went wrong :(");
-        const data = await res.json();
+    const domainRegex = /^[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*(\.[a-zA-Z]{2,})$/;
+    const ipv4Regex =
+      /^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/;
 
-        setIpInfo(data);
-        setAccess(true);
-      } catch (err) {
-        console.error(err.message);
-      } finally {
-        setIsLoading(false);
-      }
+    if (domainRegex.test(inputValue)) {
+      setRequest(`domain=${inputValue}`);
     }
-    fetchData();
-  }, []);
+
+    if (ipv4Regex.test(inputValue)) {
+      setRequest(`ip=${inputValue}`);
+    }
+  }
+
+  useEffect(
+    function () {
+      async function fetchData() {
+        try {
+          setIsLoading(true);
+
+          // get IP
+          const res = await fetch(
+            `https://geo.ipify.org/api/v2/country,city?apiKey=at_mrjYHwA8uXINz861UQyU6ym74Xh0X&${request}`
+          );
+          if (!res.ok) throw new Error("Something went wrong :(");
+          const data = await res.json();
+
+          setIpInfo(data);
+          setAccess(true);
+        } catch (err) {
+          console.error(err.message);
+        } finally {
+          setIsLoading(false);
+        }
+      }
+      fetchData();
+    },
+    [request]
+  );
 
   return (
     <div className="wrapper">
       <Header>
-        <Input inputValue={inputValue} onInputValue={handleInputValue} />
+        <Input
+          inputValue={inputValue}
+          onInputValue={handleInputValue}
+          onFetchingData={handleFetchingData}
+        />
         {ipInfo.ip && <Result ipInfo={ipInfo} />}
       </Header>
 

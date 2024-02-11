@@ -1,6 +1,6 @@
-function Input({ inputValue, onInputValue }) {
+function Input({ inputValue, onInputValue, onFetchingData }) {
   return (
-    <form>
+    <form onSubmit={(ev) => onFetchingData(ev)}>
       <input
         type="text"
         placeholder="search for any IP address or domain"
