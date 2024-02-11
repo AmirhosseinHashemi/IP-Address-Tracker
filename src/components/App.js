@@ -1,5 +1,5 @@
 import "leaflet/dist/leaflet.css";
-import { MapContainer, TileLayer, Marker } from "react-leaflet";
+import { MapContainer, TileLayer, Marker, useMap } from "react-leaflet";
 import { useEffect, useState } from "react";
 import L from "leaflet";
 
@@ -11,6 +11,12 @@ const Icon = L.icon({
   iconUrl: "/images/icon-location.svg",
   iconSize: [50, 65],
 });
+
+function ChangeView({ center, zoom }) {
+  const map = useMap();
+  map.setView(center, zoom);
+  return null;
+}
 
 function App() {
   const [access, setAccess] = useState(false);
@@ -86,6 +92,10 @@ function App() {
           scrollWheelZoom={true}
           zoomControl={false}
         >
+          <ChangeView
+            zoom={12}
+            center={[ipInfo.location.lat, ipInfo.location.lng]}
+          />
           <TileLayer
             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
