@@ -12,15 +12,21 @@ function Result({ ipInfo }) {
         {ip}
       </p>
 
+      <div className="line"></div>
+
       <p className="result__data">
         <span className="result__title">LOCATION</span>
         {`${city}, ${country}`}
       </p>
 
+      <div className="line"></div>
+
       <p className="result__data">
         <span className="result__title">TIMEZONE</span>
         UTC{timezone}
       </p>
+
+      <div className="line"></div>
 
       <p className="result__data">
         <span className="result__title">ISP</span>
