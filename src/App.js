@@ -4,22 +4,30 @@ import { useEffect, useState } from "react";
 
 function App() {
   const [access, setAccess] = useState(false);
-  const [coords, setCoords] = useState([]);
+  const [ipInfo, setIpInfo] = useState({});
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(function () {
-    setIsLoading(true);
-    navigator.geolocation.getCurrentPosition(
-      (pos) => {
+    async function fetchData() {
+      try {
+        setIsLoading(true);
+
+        // get IP
+        const res = await fetch(
+          "https://geo.ipify.org/api/v2/country,city?apiKey=at_mrjYHwA8uXINz861UQyU6ym74Xh0X&"
+        );
+        if (!res.ok) throw new Error("Something went wrong :(");
+        const data = await res.json();
+
+        setIpInfo(data);
+      } catch (err) {
+        console.error(err.message);
+      } finally {
+        setIsLoading(false);
         setAccess(true);
-        setCoords([pos.coords.latitude, pos.coords.longitude]);
-        setIsLoading(false);
-      },
-      () => {
-        setIsLoading(false);
-        console.error("Loacation not found");
       }
-    );
+    }
+    fetchData();
   }, []);
 
   return (
@@ -29,7 +37,7 @@ function App() {
       {access && (
         <MapContainer
           id="map"
-          center={coords}
+          center={[ipInfo.location.lat, ipInfo.location.lng]}
           zoom={12}
           scrollWheelZoom={true}
           zoomControl={false}
@@ -38,7 +46,7 @@ function App() {
             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           />
-          <Marker position={coords}>
+          <Marker position={[ipInfo.location.lat, ipInfo.location.lng]}>
             <Popup>
               A pretty CSS3 popup. <br /> Easily customizable.
             </Popup>
