@@ -120,7 +120,7 @@ button {
 }
 
 #map {
-  min-height: 100dvh;
+  min-height: calc(100dvh - 26rem);
   /* background-color: aqua; */
 }
 
