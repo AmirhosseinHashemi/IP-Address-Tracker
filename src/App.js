@@ -20,11 +20,11 @@ function App() {
         const data = await res.json();
 
         setIpInfo(data);
+        setAccess(true);
       } catch (err) {
         console.error(err.message);
       } finally {
         setIsLoading(false);
-        setAccess(true);
       }
     }
     fetchData();
@@ -32,8 +32,13 @@ function App() {
 
   return (
     <div className="wrapper">
-      <Header />
+      <Header>
+        <Input />
+        {ipInfo.ip && <Result ipInfo={ipInfo} />}
+      </Header>
+
       {isLoading && <p className="loader">Map Is Loading ...</p>}
+
       {access && (
         <MapContainer
           id="map"
@@ -57,12 +62,11 @@ function App() {
   );
 }
 
-function Header() {
+function Header({ children }) {
   return (
     <header>
       <h1>IP Address Tracker</h1>
-      <Input />
-      <Result />
+      {children}
     </header>
   );
 }
@@ -84,27 +88,33 @@ function Input() {
   );
 }
 
-function Result() {
+function Result({ ipInfo }) {
+  const {
+    ip,
+    isp,
+    location: { country, city, timezone },
+  } = ipInfo;
+
   return (
     <div className="result">
       <p className="result__data">
         <span className="result__title">IP ADDRESS</span>
-        192.212.174.101
+        {ip}
       </p>
 
       <p className="result__data">
         <span className="result__title">LOCATION</span>
-        Brooklyn, NY 10001
+        {`${city}, ${country}`}
       </p>
 
       <p className="result__data">
         <span className="result__title">TIMEZONE</span>
-        UTC-05:00
+        UTC{timezone}
       </p>
 
       <p className="result__data">
         <span className="result__title">ISP</span>
-        SpaceX Starlink
+        {isp}
       </p>
     </div>
   );
