@@ -3,6 +3,10 @@ import { MapContainer, TileLayer, Marker } from "react-leaflet";
 import { useEffect, useState } from "react";
 import L from "leaflet";
 
+import Header from "./Header";
+import Input from "./Input";
+import Result from "./Result";
+
 const Icon = L.icon({
   iconUrl: "/images/icon-location.svg",
   iconSize: [50, 65],
@@ -63,64 +67,6 @@ function App() {
           ></Marker>
         </MapContainer>
       )}
-    </div>
-  );
-}
-
-function Header({ children }) {
-  return (
-    <header>
-      <h1>IP Address Tracker</h1>
-      {children}
-    </header>
-  );
-}
-
-function Input() {
-  return (
-    <form>
-      <input
-        type="text"
-        placeholder="search for any IP address or domain"
-      ></input>
-
-      <button aria-label="OK">
-        <svg xmlns="http://www.w3.org/2000/svg" width="11" height="14">
-          <path fill="none" stroke="#FFF" strokeWidth="3" d="M2 1l6 6-6 6" />
-        </svg>
-      </button>
-    </form>
-  );
-}
-
-function Result({ ipInfo }) {
-  const {
-    ip,
-    isp,
-    location: { country, city, timezone },
-  } = ipInfo;
-
-  return (
-    <div className="result">
-      <p className="result__data">
-        <span className="result__title">IP ADDRESS</span>
-        {ip}
-      </p>
-
-      <p className="result__data">
-        <span className="result__title">LOCATION</span>
-        {`${city}, ${country}`}
-      </p>
-
-      <p className="result__data">
-        <span className="result__title">TIMEZONE</span>
-        UTC{timezone}
-      </p>
-
-      <p className="result__data">
-        <span className="result__title">ISP</span>
-        {isp}
-      </p>
     </div>
   );
 }
