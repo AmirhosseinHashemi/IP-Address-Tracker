@@ -35,7 +35,7 @@ function App() {
     }
 
     if (ipv4Regex.test(inputValue)) {
-      setRequest(`ip=${inputValue}`);
+      setRequest(`ipAddress=${inputValue}`);
     }
   }
 
