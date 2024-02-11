@@ -67,6 +67,11 @@ function App() {
         }
       }
       fetchData();
+
+      return () => {
+        setIpInfo({});
+        setAccess(false);
+      };
     },
     [request]
   );
