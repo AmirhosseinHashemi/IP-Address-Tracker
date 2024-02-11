@@ -1,9 +1,11 @@
-function Input() {
+function Input({ inputValue, onInputValue }) {
   return (
     <form>
       <input
         type="text"
         placeholder="search for any IP address or domain"
+        value={inputValue}
+        onChange={(e) => onInputValue(e.target.value)}
       ></input>
 
       <button aria-label="OK">

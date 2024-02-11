@@ -16,6 +16,11 @@ function App() {
   const [access, setAccess] = useState(false);
   const [ipInfo, setIpInfo] = useState({});
   const [isLoading, setIsLoading] = useState(false);
+  const [inputValue, setInputValue] = useState("");
+
+  function handleInputValue(value) {
+    setInputValue(value);
+  }
 
   useEffect(function () {
     async function fetchData() {
@@ -43,7 +48,7 @@ function App() {
   return (
     <div className="wrapper">
       <Header>
-        <Input />
+        <Input inputValue={inputValue} onInputValue={handleInputValue} />
         {ipInfo.ip && <Result ipInfo={ipInfo} />}
       </Header>
 
